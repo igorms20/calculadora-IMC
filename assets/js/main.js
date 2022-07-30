@@ -1,45 +1,52 @@
 const container = document.querySelector('.container');
-const peso = document.querySelector('#input1');
-const altura = document.querySelector('#input2');
+const inputPeso = document.querySelector('#peso');
+const inputAltura = document.querySelector('#altura');
 const form = document.querySelector('form');
 const calcBtn = document.querySelector('button');
 const result = document.querySelector('.result');
 
 function associarIMC(imc) {
-    let categoria;
     if (imc < 18.5) {
-        categoria = 'Abaixo do peso';
-    } else if (imc >= 18.5 && imc <= 24.9) {
-        categoria = 'Peso normal';
-    } else if (imc >= 25 && imc <= 29.9) {
-        categoria = 'Sobrepeso';
-    } else if (imc >= 30 && imc <= 34.9) {
-        categoria = 'Obesidade grau 1';
-    } else if (imc >= 35 && imc <= 39.9) {
-        categoria = 'Obesidade grau 2';
-    } else {
-        categoria = 'Obesidade grau 3';
+       return 'Abaixo do peso';
+    } 
+    
+    if (imc <= 24.9) {
+        return 'Peso normal';
+    } 
+    
+    if (imc <= 29.9) {
+        return 'Sobrepeso';
     }
+    
+    if (imc <= 34.9) {
+        return 'Obesidade grau 1';
+    }
+    
+    if (imc <= 39.9) {
+        return 'Obesidade grau 2';
+    } 
 
-    return categoria;
+    return 'Obesidade grau 3';
 }
 
 function mostrarResultado() {
-    const imc = peso.value/(altura.value**2);
+    const peso = Number(inputPeso.value);
+    const altura = Number(inputAltura.value);
+    const imc = peso/(altura**2);
     const categoria = associarIMC(imc);
 
-    if (isNaN(Number(imc)) || (peso.value === '' || altura.value === '')) {
-        result.classList.add('invalid');
-        
-        if (peso.value === '' && altura.value !== '' || isNaN(Number(peso.value)) && !isNaN(Number(altura.value))) {
-            return 'Peso inválido';
-        } else if (altura.value === '' && peso.value !== '' || isNaN(Number(altura.value)) && !isNaN(Number(peso.value))) {
-            return 'Altura inválida';
-        } 
-            
-        return 'Entrada inválida';         
-    }
+    result.classList.add('invalid');
 
+    if (!peso && !altura) {
+        return 'Entrada inválida'
+    }    
+    if (!peso) {
+        return 'Peso inválido';
+    } 
+    if (!altura) {
+        return 'Altura inválida';
+    } 
+                    
     result.classList.remove('invalid');
     return `Seu IMC é ${imc.toFixed(2)} (${categoria})`;    
 }
